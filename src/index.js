@@ -8,6 +8,11 @@ import NewArticleForm from './components/NewArticleForm';
 import ArticleList from "./components/ArticleList";
 import ArticleDetail from "./components/ArticleDetail";
 
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import rootReducer from './reducers';
+import thunk from 'redux-thunk';
+
 
 class App extends React.Component {
 
@@ -86,7 +91,9 @@ class App extends React.Component {
 
 	addNewArticleEvent = (article) => {
 		const articles = this.state.articles;
-		article.id = articles.length + 1;
+		const mapped_article_id = articles.map( i => parseInt(i.id));
+		const max = Math.max(...mapped_article_id);
+		article.id = max + 1;
 		article.create_by = this.state.user.id;
 		articles.push(article);
 		this.setStateAndLocalStorage("articles", articles);
@@ -140,12 +147,7 @@ class App extends React.Component {
 				<Route
 					path="/"
 					exact
-					render={props => (
-						<ArticleList
-						articles={this.state.articles}
-						users={this.state.users}
-						/>
-					)}
+					component={ArticleList}
 					/>
 			</Router>
 		)
@@ -153,4 +155,10 @@ class App extends React.Component {
 }
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+const store = createStore(rootReducer,applyMiddleware(thunk))  ;
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  rootElement
+);
