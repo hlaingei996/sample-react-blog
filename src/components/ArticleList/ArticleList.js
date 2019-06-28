@@ -3,7 +3,6 @@ import Article from "../Article";
 import { connect } from "react-redux";
 import { fetchArticles } from '../../actions/articleAction';
 import { fetchUsers } from '../../actions/userAction';
-import { stat } from "fs";
 
 class ArticleList extends React.Component {
 

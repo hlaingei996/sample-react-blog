@@ -89,15 +89,15 @@ class App extends React.Component {
 		localStorage.setItem(key, JSON.stringify(value));
 	}
 
-	addNewArticleEvent = (article) => {
-		const articles = this.state.articles;
-		const mapped_article_id = articles.map( i => parseInt(i.id));
-		const max = Math.max(...mapped_article_id);
-		article.id = max + 1;
-		article.create_by = this.state.user.id;
-		articles.push(article);
-		this.setStateAndLocalStorage("articles", articles);
-	}
+	// addNewArticleEvent = (article) => {
+	// 	const articles = this.state.articles;
+	// 	const mapped_article_id = articles.map( i => parseInt(i.id));
+	// 	const max = Math.max(...mapped_article_id);
+	// 	article.id = max + 1;
+	// 	article.create_by = this.state.user.id;
+	// 	articles.push(article);
+	// 	this.setStateAndLocalStorage("articles", articles);
+	// }
 
 	render() {
 		return (
@@ -121,7 +121,7 @@ class App extends React.Component {
 					path='/article/new' 
 					render={ props => this.state.isLogin ? 
 						(
-							<NewArticleForm {...props}  addNewArticleEvent={this.addNewArticleEvent} />
+							<NewArticleForm {...props}  currentUser={this.state.user} />
 						) :
 						(
 							<Redirect to={{
